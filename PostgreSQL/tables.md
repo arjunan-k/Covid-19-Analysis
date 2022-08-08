@@ -3,8 +3,8 @@ CREATE TABLE public.covid_deaths
 (
     iso_code character varying(10),
     continent character varying(25),
-    location character varying(25),
-    date date,
+    location character varying(50),
+    date character varying(10),
     population bigint,
     total_cases bigint,
     new_cases bigint,
