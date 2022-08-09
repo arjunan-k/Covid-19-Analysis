@@ -51,9 +51,15 @@ WHERE continent IS NULL
 GROUP BY location
 ORDER BY total_death_count DESC
 ```
-
+# Showing the total death percentage per date
 ```sql
-
+SELECT SUM(new_cases) as total_cases, SUM(new_deaths) as total_death,
+(SUM(new_deaths)/SUM(new_cases)) * 100 AS deathpercentage
+FROM covid_deaths
+WHERE CONTINENT IS NOT NULL
+GROUP BY date
+HAVING (SUM(new_deaths)/SUM(new_cases)) IS NOT NULL
+ORDER BY total_cases DESC
 ```
 
 ```sql
