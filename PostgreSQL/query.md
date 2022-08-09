@@ -61,11 +61,16 @@ GROUP BY date
 HAVING (SUM(new_deaths)/SUM(new_cases)) IS NOT NULL
 ORDER BY total_cases DESC
 ```
-
+# Total Population v/s Vaccinations
 ```sql
-
+SELECT cd.continent, cd.location, cd.date, cd.population, cv.new_vaccinations 
+FROM covid_deaths AS cd
+INNER JOIN covid_vaccinations AS cv
+ON cd.location = cv.location
+WHERE new_vaccinations IS NOT NULL
+ORDER BY new_vaccinations DESC
 ```
-
+# 
 ```sql
 
 ```
