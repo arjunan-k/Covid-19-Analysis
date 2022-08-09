@@ -70,15 +70,3 @@ ON cd.location = cv.location
 WHERE new_vaccinations IS NOT NULL
 ORDER BY new_vaccinations DESC
 ```
-# 
-```sql
-
-```
-
-```sql
-
-```
-
-```sql
-
-```
