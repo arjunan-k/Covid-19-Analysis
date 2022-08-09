@@ -24,7 +24,7 @@ SELECT location, date, population, total_cases,
 FROM covid_deaths
 ORDER BY infected_population DESC
 
-# Top 10 infected Country
+# ----- Top 10 infected Country ----- #
 
 SELECT location, population, MAX(total_cases), 
 MAX((total_cases/population)) * 100 AS infected_population
@@ -34,8 +34,22 @@ GROUP BY location, population
 ORDER BY infected_population DESC
 LIMIT 10
 ```
+# Showing top 10 Countries with highest death count per population
 ```sql
+SELECT location, continent, population, MAX(total_deaths) AS total_death_count
+FROM covid_deaths
+WHERE total_deaths IS NOT NULL AND continent IS NOT NULL
+GROUP BY location, population, continent
+ORDER BY total_death_count DESC
+LIMIT 10
 
+# ----- Death count in continents ----- #
+
+SELECT location, MAX(total_deaths) AS total_death_count
+FROM covid_deaths
+WHERE continent IS NULL
+GROUP BY location
+ORDER BY total_death_count DESC
 ```
 
 ```sql
