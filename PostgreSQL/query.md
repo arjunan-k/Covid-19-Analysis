@@ -63,10 +63,106 @@ ORDER BY total_cases DESC
 ```
 # Total Population v/s Vaccinations
 ```sql
-SELECT cd.continent, cd.location, cd.date, cd.population, cv.new_vaccinations 
+SELECT cd.continent, cd.location, cd.date, 
+cd.population, cv.new_vaccinations, 
+    SUM(cv.new_vaccinations) 
+    OVER (PARTITION BY cd.location ORDER BY cd.location , cd.date) AS RollingPeopleVaccinations
+    
 FROM covid_deaths AS cd
 INNER JOIN covid_vaccinations AS cv
-ON cd.location = cv.location
-WHERE new_vaccinations IS NOT NULL
-ORDER BY new_vaccinations DESC
+ON cd.location = cv.location AND cd.date = cv.date
+WHERE cd.continent IS NOT NULL AND cv.new_vaccinations IS NOT NULL
+ORDER BY 2, 3
+# LIMIT 25
 ```
+# Percentage of Total Population v/s Total Vaccinations Using CTE (Common Table Expression)
+```sql
+WITH PopvsVac
+AS 
+(
+SELECT cd.continent, cd.location, cd.date, 
+cd.population, cv.new_vaccinations, 
+    SUM(cv.new_vaccinations) 
+    OVER (PARTITION BY cd.location ORDER BY cd.location , cd.date) AS rolling_people_vaccinations
+    
+FROM covid_deaths AS cd
+INNER JOIN covid_vaccinations AS cv
+ON cd.location = cv.location AND cd.date = cv.date
+WHERE cd.continent IS NOT NULL AND cv.new_vaccinations IS NOT NULL
+ORDER BY 2, 3
+)
+
+SELECT *, (rolling_people_vaccinations/population)*100 FROM PopvsVac
+# LIMIT 25
+```
+# Percentage of Total Population v/s Total Vaccinations Using Temp Table
+```sql
+DROP TABLE IF EXISTS PopvsVac;
+
+CREATE TEMP TABLE PopvsVac(
+    continent VARCHAR(255),
+    location VARCHAR(255),
+    date VARCHAR(255),
+    population BIGINT,
+    new_vaccinations BIGINT,
+    rolling_people_vaccinations NUMERIC
+);
+
+INSERT INTO PopvsVac(continent, location, date, population, new_vaccinations, rolling_people_vaccinations)
+(
+SELECT cd.continent, cd.location, cd.date, 
+cd.population, cv.new_vaccinations, 
+    SUM(cv.new_vaccinations) 
+    OVER (PARTITION BY cd.location ORDER BY cd.location , cd.date) AS rolling_people_vaccinations
+    
+FROM covid_deaths AS cd
+INNER JOIN covid_vaccinations AS cv
+ON cd.location = cv.location AND cd.date = cv.date
+WHERE cd.continent IS NOT NULL AND cv.new_vaccinations IS NOT NULL
+ORDER BY 2, 3
+)
+
+SELECT *, (rolling_people_vaccinations/population)*100 FROM PopvsVac
+# LIMIT 25
+```
+# Creating Views for later Visualizations
+```sql
+CREATE VIEW percent_population_vaccinated AS 
+(
+SELECT cd.continent, cd.location, cd.date, 
+cd.population, cv.new_vaccinations, 
+    SUM(cv.new_vaccinations) 
+    OVER (PARTITION BY cd.location ORDER BY cd.location , cd.date) AS rolling_people_vaccinations
+    
+FROM covid_deaths AS cd
+INNER JOIN covid_vaccinations AS cv
+ON cd.location = cv.location AND cd.date = cv.date
+WHERE cd.continent IS NOT NULL
+)
+
+# SELECT * FROM percent_population_vaccinated
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
