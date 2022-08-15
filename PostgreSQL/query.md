@@ -143,7 +143,15 @@ WHERE cd.continent IS NOT NULL
 # SELECT * FROM percent_population_vaccinated
 ```
 
-
+# Total Death Count Per Location
+```sql
+SELECT LOCATION, SUM(cast(new_deaths as int)) as total_death_count
+FROM covid_deaths
+WHERE continent is null 
+AND location NOT IN ('World', 'European Union', 'International')
+GROUP BY location
+ORDER BY total_death_count DESC
+```
 
 
 
