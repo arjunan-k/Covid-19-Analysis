@@ -1,4 +1,3 @@
-```sql
 CREATE TABLE public.covid_deaths
 (
     iso_code character varying(10),
@@ -31,12 +30,7 @@ CREATE TABLE public.covid_deaths
 
 ALTER TABLE IF EXISTS public.covid_deaths
     OWNER to postgres;
-```
 
-
-
-
-```sql
 
 
 CREATE TABLE public.covid_vaccinations
@@ -82,4 +76,3 @@ CREATE TABLE public.covid_vaccinations
 
 ALTER TABLE IF EXISTS public.covid_vaccinations
     OWNER to postgres;
-```
