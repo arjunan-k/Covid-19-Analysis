@@ -1,9 +1,9 @@
-# Covid Death Anlysis
+# Covid Death Analysis
 ```sql
 SELECT * FROM covid_deaths            -- Complete dataset of covid_deaths
 SELECT * FROM covid_vaccinations      -- Complete dataset of covid_vaccinations
 ```
-# Dataset of covid_deaths we are using
+# Dataset of covid_deaths
 ```sql
 SELECT location, date, total_cases, new_cases, total_deaths, population 
 FROM covid_deaths
@@ -34,7 +34,7 @@ GROUP BY location, population
 ORDER BY infected_population DESC
 LIMIT 10
 ```
-# Showing top 10 Countries with highest death count per population
+# Showing Top 10 Countries with Highest Death Count Per Population
 ```sql
 SELECT location, continent, population, MAX(total_deaths) AS total_death_count
 FROM covid_deaths
@@ -51,7 +51,7 @@ WHERE continent IS NULL
 GROUP BY location
 ORDER BY total_death_count DESC
 ```
-# Showing the total death percentage per date
+# Showing the Total Death Percentage Per Date
 ```sql
 SELECT SUM(new_cases) as total_cases, SUM(new_deaths) as total_death,
 (SUM(new_deaths)/SUM(new_cases)) * 100 AS deathpercentage
