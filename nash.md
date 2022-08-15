@@ -1,3 +1,4 @@
+```sql
 -- Changing the Type of saledate Column
 
 -- SELECT saledate, DATE(saledate) FROM nash_house
@@ -37,3 +38,5 @@ SET updated_property_address = COALESCE(n1.property_address, n2.property_address
                                FROM nash_house AS n1
                                INNER JOIN nash_house AS n2
                                ON n1.parcel_id = n2.parcel_id AND n1.unique_id <> n2.unique_id
+ 
+```
